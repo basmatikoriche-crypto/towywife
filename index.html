@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>من أجل روني 💕</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffeef2;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* خلفية مخصصة للموقع */
+        .bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('hellokitty.png') no-repeat center center;
+            background-size: contain;
+            z-index: 1;
+        }
+
+        /* حاوية زجاجية مصقولة واحترافية */
+        .card {
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 183, 206, 0.6);
+            border-radius: 24px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(211, 77, 114, 0.2);
+            animation: cubic-bezier(0.175, 0.885, 0.32, 1.275) fadeIn 0.8s;
+            position: relative;
+            z-index: 10;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        /* شريط تقدم الأسئلة الناعم */
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            height: 6px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff8eaf, #f65281);
+            transition: width 0.4s ease;
+        }
+
+        /* صندوق فيديو هيلو كيتي الراقص المثبت بالأعلى */
+        .video-container {
+            width: 100%;
+            max-height: 170px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #000;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #ffe3ec;
+            color: #d14d72;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        /* حجم خط الأسئلة المصغرة والأنيقة */
+        h2 {
+            color: #d14d72;
+            font-size: 1.25rem;
+            margin: 0 0 15px 0;
+            line-height: 1.6;
+            font-weight: 700;
+        }
+
+        /* حاوية الأزرار الموحدة */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 5px;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 10px 32px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(211, 77, 114, 0.12);
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #ff8eaf, #f65281);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(246, 82, 129, 0.35);
+        }
+
+        .btn-no {
+            background-color: #ffffff;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+
+        .btn-no:hover {
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        /* شاشة رد الفعل اللحظية المنبثقة للـ Yes و No */
+        .flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease-in-out;
+        }
+
+        .flash-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* إطار دائري احترافي لعرض صور كيتي التعبيرية */
+        .flash-img-frame {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(211, 77, 114, 0.15);
+            border: 3px solid #ffd3e2;
+            margin-bottom: 12px;
+            animation: popCheck 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .flash-img-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .flash-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .text-sad { color: #5a5a5a; }
+        .text-happy { color: #f65281; }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* تنسيق واجهة النهاية والاعتذار */
+        .english-love {
+            font-size: 1.3rem;
+            color: #d14d72;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.4;
+        }
+
+        .arabic-message {
+            color: #333;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .apology-text {
+            color: #606060;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            border-top: 1px dashed #ffd3e2;
+            padding-top: 12px;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* الصورة الأخيرة النابضة */
+        .final-img {
+            width: 130px;
+            height: auto;
+            margin: 10px auto 0 auto;
+            display: block;
+            border-radius: 12px;
+            animation: gentleBeat 2s infinite ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popCheck {
+            0% { transform: scale(0.6); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes gentleBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="song.mp3" loop></audio>
+
+    <div class="bg-container"></div>
+
+    <div class="card" id="quiz-card">
+        
+        <div id="flash-screen" class="flash-overlay">
+            <div class="flash-img-frame">
+                <img id="flash-avatar" src="yes.jpeg" alt="Status Image">
+            </div>
+            <div id="flash-text" class="flash-text">رسالة قصيرة</div>
+        </div>
+        
+        <div class="video-container">
+            <video id="dance-video" src="Hello kitty dance.mp4" loop muted playsinline></video>
+        </div>
+
+        <div class="progress-container" id="p-container">
+            <div class="progress-bar" id="p-bar"></div>
+        </div>
+
+        <div id="start-view">
+            <div class="badge">مفاجأة خاصة ✨</div>
+            <h2>هل أنتي مستعدة يا روني؟ 💕</h2>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="startQuiz()">Yes</button>
+                <button class="btn-no" onclick="startQuiz()">No</button>
+            </div>
+        </div>
+
+        <div id="questions-view" class="hidden">
+            <div class="badge" id="question-counter">السؤال 1 من 15</div>
+            <h2 id="question-text">السؤال هنا</h2>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="handleResponse(true)">Yes</button>
+                <button class="btn-no" onclick="handleResponse(false)">No</button>
+            </div>
+        </div>
+
+        <div id="final-view" class="hidden" dir="ltr">
+            <div class="english-love">I love you my wife, just you have to fix your problem like me ❤️</div>
+            
+            <div class="arabic-message" dir="rtl">
+                نحلوها كراشدين بنقاش ونعبرو على مشاعرنا مشي بزعاف، وإذا محكيتش معايا هك مش راح نطولو.
+            </div>
+
+            <div class="apology-text" dir="rtl">
+                آسف إذا ما عرفتش نوصلك مشاعري بطريقة صحيحة.. 🌹
+            </div>
+
+            <img class="final-img" src="lastpic.jpeg" alt="Our Special Moment">
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "هل تشعرين أنني أستحق أن أُسمع؟",
+            "هل تحسين أنني أحاول فهمك؟",
+            "هل تحسين أنك تفهمين مشاعري？",
+            "هل تعلمين أن التجاهل يؤلمني أحيانًا؟",
+            "هل تعلمين أن بعض التصرفات تجعلني محبطًا؟",
+            "هل تحسين أن التواصل بيننا يحتاج أن يكون أفضل؟",
+            "هل تحسين أن مشاعري مهمة بالنسبة لك؟",
+            "هل تعتقدين أن تجاهل المشكلة يحلها؟",
+            "هل تحسين أن أسلوبنا الحالي يحل المشاكل؟",
+            "هل سبق وشعرتِ أنني غير مهم؟",
+            "هل تعلمين أنني أتأثر عندما لا أجد تقديرًا؟",
+            "هل تعتقدين أن مشاعري تستحق الاهتمام؟",
+            "هل ترغبين في فهم ما يزعجني؟",
+            "هل يمكننا أن نصبح أفضل في التواصل؟",
+            "هل ما زلتِ مهتمة بسماع ما أشعر به؟"
+        ];
+
+        let currentQuestionIndex = 0;
+        const music = document.getElementById('bg-music');
+        const video = document.getElementById('dance-video');
+
+        function startQuiz() {
+            music.play().catch(e => console.log("الموسيقى تنتظر نقرة أولى للعمل"));
+            video.play();
+
+            document.getElementById('start-view').classList.add('hidden');
+            document.getElementById('questions-view').classList.remove('hidden');
+            document.getElementById('p-container').style.display = 'block';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const qText = document.getElementById('question-text');
+            const counter = document.getElementById('question-counter');
+            const pBar = document.getElementById('p-bar');
+            
+            qText.innerText = questions[currentQuestionIndex];
+            counter.innerText = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
+            
+            const progressPercent = ((currentQuestionIndex) / questions.length) * 100;
+            pBar.style.width = `${progressPercent}%`;
+        }
+
+        // معالجة الضغط الاحترافي والخاطف للصور بناءً على صورك المضافة حديثاً
+        function handleResponse(isYes) {
+            const flashScreen = document.getElementById('flash-screen');
+            const flashAvatar = document.getElementById('flash-avatar');
+            const flashText = document.getElementById('flash-text');
+
+            if (isYes) {
+                flashAvatar.src = "yes.jpeg"; // استدعاء صورتك السعيدة المضافة
+                flashText.innerText = "فرحتيني.. 💕";
+                flashText.className = "flash-text text-happy";
+            } else {
+                flashAvatar.src = "no.jpeg"; // استدعاء صورتك الحزينة المضافة
+                flashText.innerText = "زعلتيني.. 💔";
+                flashText.className = "flash-text text-sad";
+            }
+
+            // تفعيل وظهور الشاشة التعبيرية فوق الأسئلة
+            flashScreen.classList.add('active');
+
+            // إخفاء الصورة تلقائياً بعد 550 ميلي ثانية (نصف ثانية تقريباً) والانتقال للسؤال التالي
+            setTimeout(() => {
+                flashScreen.classList.remove('active');
+                
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion();
+                } else {
+                    document.getElementById('p-bar').style.width = '100%';
+                    document.getElementById('questions-view').classList.add('hidden');
+                    document.getElementById('p-container').classList.add('hidden');
+                    document.getElementById('final-view').classList.remove('hidden');
+                }
+            }, 550); 
+        }
+    </script>
+</body>
+</html>
